@@ -11,15 +11,23 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
+
+/**
+ * Centralized exception handler that intercepts and handles application exceptions,
+ * providing meaningful error responses to the client.
+ */
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public final class GlobalExceptionHandler {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<ErrorResponse> handleValidationErrors(MethodArgumentNotValidException ex, HttpServletRequest request) {
+  public ResponseEntity<ErrorResponse> handleValidationErrors(
+      final MethodArgumentNotValidException ex, final HttpServletRequest request
+  ) {
     String details = ex.getBindingResult()
         .getFieldErrors()
         .stream()
-        .map(error -> error.getField() + Constant.COLON_SEPARATOR + error.getDefaultMessage())
+        .map(error -> error.getField() +
+            Constant.COLON_SEPARATOR + error.getDefaultMessage())
         .collect(Collectors.joining(Constant.COMMA_SEPARATOR));
     ErrorResponse error = ErrorResponse.builder()
         .code(HttpStatus.BAD_REQUEST.value())
@@ -31,8 +39,17 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
   }
 
+  /**
+   * Exception handler for managing runtime exceptions caused by validation errors.
+   *
+   * @param ex the runtime exception instance.
+   * @param request the HTTP request information.
+   * @return an error DTO containing details about the cause of the error.
+   */
   @ExceptionHandler(RuntimeException.class)
-  public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException ex, HttpServletRequest request) {
+  public ResponseEntity<ErrorResponse> handleRuntimeException(
+      final RuntimeException ex, final HttpServletRequest request
+  ) {
     ErrorResponse error = ErrorResponse.builder()
         .code(HttpStatus.UNPROCESSABLE_ENTITY.value())
         .message(Constant.BUSINESS_VALIDATION)

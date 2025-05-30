@@ -38,8 +38,8 @@ class MembershipServiceImplTest {
   void setUp() {
     membership = Membership.builder()
         .id(1L)
-        .nombre("Premium")
-        .pasesIncluidos(10)
+        .name("Premium")
+        .includedPasses(10)
         .build();
 
     dto = MembershipDTO.builder()

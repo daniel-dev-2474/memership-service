@@ -115,7 +115,7 @@
 								<exclude>**/entity/**</exclude>
 								<exclude>**/repository/**</exclude>
 								<exclude>**/config/**</exclude>
-								<exclude>**/MembresiaServiceApplication.class</exclude>
+								<exclude>**/MembershipServiceApplication.class</exclude>
 							</excludes>
 						</configuration>
 					</execution>

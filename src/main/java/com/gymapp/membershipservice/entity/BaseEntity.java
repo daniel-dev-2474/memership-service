@@ -8,24 +8,45 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+/**
+ * Base entity class to be extended by other JPA entities.
+ */
 @MappedSuperclass
 @Data
 public class BaseEntity {
 
+  /**
+   * Indicated whether the entity is active.
+   */
   @Column(nullable = false)
   protected Boolean active = true;
 
+  /**
+   * Timestamp of when the entity was created.
+   */
   @Column(updatable = false)
   protected LocalDateTime createdAt;
 
+  /**
+   * timestamp of when the entity was last updated.
+   */
+
   protected LocalDateTime modifiedAt;
 
+  /**
+   * Called before the entity is persisted.
+   * Subclasses may override this to perform custom logic before creation.
+   */
   @PrePersist
   protected void onCreate() {
     this.createdAt = LocalDateTime.now();
     this.modifiedAt = this.createdAt;
   }
 
+  /**
+   * Called before the entity is updated.
+   * Subclasses may override this to perform custom logic before update.
+   */
   @PreUpdate
   protected void onUpdate() {
       this.modifiedAt = LocalDateTime.now();

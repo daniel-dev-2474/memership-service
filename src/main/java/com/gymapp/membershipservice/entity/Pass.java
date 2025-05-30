@@ -7,45 +7,45 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * Represents a membership plan in the gym system.
- */
+import java.time.LocalDate;
+import java.util.UUID;
 
+/**
+ * Represents a single-use pass that allows access to the gym.
+ */
 @Entity
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class Membership extends BaseEntity {
+@Builder
+public class Pass extends BaseEntity{
 
   /**
-   * The unique identifier for the membership plan.
+   * Unique identifier for the pass.
    */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   /**
-   * Name of the membership plan (e.g., Monthly, Quarterly).
+   * UUID of the user to whom the pass is assigned.
    */
-  private String name;
+  @Column(nullable = false, columnDefinition = "UUID")
+  private UUID userId;
 
   /**
-   * Duration of the membership in days (e.g., 30 for a monthly plan).
+   * Indicates whether the pass has been used.
    */
   @Column(nullable = false)
-  private Integer durationInDays;
+  private boolean used = false;
 
   /**
-   * Cost of the membership in the local currency.
+   * Date when the pass was used (null if not yet used).
    */
-  @Column(nullable = false)
-  private Double cost;
+  private LocalDateok  fechaUso;
 }
