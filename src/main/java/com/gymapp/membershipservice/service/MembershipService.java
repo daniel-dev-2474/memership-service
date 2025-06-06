@@ -1,8 +1,10 @@
 package com.gymapp.membershipservice.service;
 
 import com.gymapp.membershipservice.dto.MembershipDTO;
+import com.gymapp.membershipservice.dto.MembershipRequest;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Service interface for managing memberships.
@@ -17,36 +19,13 @@ public interface MembershipService {
    * @param dto the data for the new membership.
    * @return the created MembershipDTO.
    */
-  MembershipDTO create(MembershipDTO dto);
+  MembershipDTO create(MembershipRequest dto);
 
   /**
    * Retrieves a list of all memberships.
    *
+   * @param userId for the user passes.
    * @return list of MembershipDTO.
    */
-  List<MembershipDTO> findAll();
-
-  /**
-   * Retrieves a specific membership by its ID.
-   *
-   * @param id the ID of the membership to retrieve.
-   * @return the MembershipDTO if found.
-   */
-  MembershipDTO findById(Long id);
-
-  /**
-   * Updates an existing membership.
-   *
-   * @param id the ID of the membership to update.
-   * @param dto the updated membership data.
-   * @return the updated MembershipDTO.
-   */
-  MembershipDTO update(Long id, MembershipDTO dto);
-
-  /**
-   * Deletes a membership by ID.
-   *
-   * @param id the ID of the membership to delete.
-   */
-  void update(Long id);
+  List<MembershipDTO> getMembershipsByUserId(UUID userId);
 }

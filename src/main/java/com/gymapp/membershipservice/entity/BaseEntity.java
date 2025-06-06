@@ -9,7 +9,8 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * Base entity class to be extended by other JPA entities.
+ * Base class for entities providing audit fields like createdAt,
+ * modifiedAt and active flag.
  */
 @MappedSuperclass
 @Data
@@ -19,19 +20,18 @@ public class BaseEntity {
    * Indicated whether the entity is active.
    */
   @Column(nullable = false)
-  protected Boolean active = true;
+  private Boolean active = true;
 
   /**
    * Timestamp of when the entity was created.
    */
   @Column(updatable = false)
-  protected LocalDateTime createdAt;
+  private LocalDateTime createdAt;
 
   /**
    * timestamp of when the entity was last updated.
    */
-
-  protected LocalDateTime modifiedAt;
+  private LocalDateTime modifiedAt;
 
   /**
    * Called before the entity is persisted.

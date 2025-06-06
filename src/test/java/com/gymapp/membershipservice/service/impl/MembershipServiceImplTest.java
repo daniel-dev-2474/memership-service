@@ -1,26 +1,28 @@
 package com.gymapp.membershipservice.service.impl;
 
 import com.gymapp.membershipservice.dto.MembershipDTO;
+import com.gymapp.membershipservice.dto.MembershipRequest;
 import com.gymapp.membershipservice.entity.Membership;
+import com.gymapp.membershipservice.mapper.MembershipMapper;
 import com.gymapp.membershipservice.repository.MembershipRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
-
+/**
+ * Unit tests for {@link MembershipServiceImpl}.
+ */
 @ExtendWith(MockitoExtension.class)
 class MembershipServiceImplTest {
 
@@ -30,106 +32,60 @@ class MembershipServiceImplTest {
   @InjectMocks
   private MembershipServiceImpl service;
 
+  private MembershipRequest request;
   private Membership membership;
+  private UUID userId;
 
-  private MembershipDTO dto;
-
+  /**
+   * Set up data before each test.
+   */
   @BeforeEach
   void setUp() {
-    membership = Membership.builder()
-        .id(1L)
-        .name("Premium")
-        .includedPasses(10)
+    userId = UUID.randomUUID();
+
+    request = MembershipRequest.builder()
+        .userId(userId)
+        .startDate(LocalDate.now())
+        .endDate(LocalDate.now().plusMonths(1))
+        .name("Mensual")
         .build();
 
-    dto = MembershipDTO.builder()
-        .name("Premium")
-        .includedPasses(10)
-        .build();
+    membership = MembershipMapper.toEntity(request);
+    membership.setId(1L);
   }
 
+  /**
+   * Test the creation of a new membership.
+   */
   @Test
-  void testCrearMembresia() {
+  void testCreateMembership() {
     when(repository.save(any(Membership.class))).thenReturn(membership);
 
-    MembershipDTO resultado = service.create(dto);
+    MembershipDTO result = service.create(request);
 
-    assertEquals("Premium", resultado.getName());
-    assertEquals(10, resultado.getIncludedPasses());
-    verify(repository).save(any());
+    assertThat(result).isNotNull();
+    assertThat(result.getUserId()).isEqualTo(request.getUserId());
+    assertThat(result.getName()).isEqualTo(request.getName());
+
+    // Optional: verify values sent to save()
+    ArgumentCaptor<Membership> captor = ArgumentCaptor.forClass(Membership.class);
+    verify(repository).save(captor.capture());
+    assertThat(captor.getValue().getUserId()).isEqualTo(request.getUserId());
   }
 
+  /**
+   * Test retrieving all memberships by user ID.
+   */
   @Test
-  void test_findById() {
-    when(repository.findById(any())).thenReturn(Optional.of(membership));
+  void testGetMembershipsByUserId() {
+    when(repository.findByUserId(userId)).thenReturn(List.of(membership));
 
-    MembershipDTO resultado = service.findById(1L);
+    List<MembershipDTO> result = service.getMembershipsByUserId(userId);
 
-    assertEquals(1, resultado.getId());
-    assertEquals("Premium", resultado.getName());
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0).getUserId()).isEqualTo(userId);
+    assertThat(result.get(0).getName()).isEqualTo(membership.getName());
+
+    verify(repository).findByUserId(userId);
   }
-
-  @Test
-  void test_findByIdFail() {
-    when(repository.findById(2L)).thenReturn(Optional.empty());
-
-    assertThrows(RuntimeException.class, () -> {
-      service.findById(2L);
-    });
-  }
-
-  @Test
-  void listarActivos_deberiaRetornarListaDTOs() {
-    when(repository.findAll()).thenReturn(List.of(membership));
-
-    List<MembershipDTO> resultado = service.findAll();
-
-    assertEquals(1, resultado.size());
-    assertEquals("Premium", resultado.get(0).getName());
-  }
-
-  @Test
-  void actualizar_deberiaActualizarYRetornarDTO() {
-    MembershipDTO actualizacion = MembershipDTO.builder()
-        .name("Actualizada")
-        .includedPasses(12)
-        .build();
-
-    when(repository.findById(1L)).thenReturn(Optional.of(membership));
-    when(repository.save(any())).thenReturn(membership);
-
-    MembershipDTO resultado = service.update(1L, actualizacion);
-
-    assertEquals("Actualizada", resultado.getName());
-    assertEquals(12, resultado.getIncludedPasses());
-  }
-
-  @Test
-  void actualizar_deberiaLanzarExcepcionSiNoExiste() {
-    when(repository.findById(2L)).thenReturn(Optional.empty());
-
-    assertThrows(RuntimeException.class, () -> {
-      service.update(2L, dto);
-    });
-  }
-
-  @Test
-  void eliminar_deberiaMarcarComoInactivo() {
-    when(repository.findById(1L)).thenReturn(Optional.of(membership));
-
-    service.update(1L);
-
-    assertFalse(membership.getActive());
-    verify(repository).save(membership);
-  }
-
-  @Test
-  void eliminar_deberiaLanzarExcepcionSiNoExiste() {
-    when(repository.findById(99L)).thenReturn(Optional.empty());
-
-    assertThrows(RuntimeException.class, () -> {
-      service.update(99L);
-    });
-  }
-
 }

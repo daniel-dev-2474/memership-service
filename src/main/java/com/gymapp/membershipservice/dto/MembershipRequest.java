@@ -1,6 +1,7 @@
 package com.gymapp.membershipservice.dto;
 
-import com.gymapp.membershipservice.constant.Constant;
+
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -11,25 +12,19 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.UUID;
 
-
 /**
- * Data transfer object for returning membership information.
+ * Request DTO for creating a membership.
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MembershipDTO {
-
-  /**
-   * The unique identifier for the membership plan.
-   */
-  private Long id;
+public class MembershipRequest {
 
   /**
    * ID of the user to whom this membership belongs.
    */
-  @NotBlank
+  @NotNull
   private UUID userId;
 
   /**
@@ -42,12 +37,12 @@ public class MembershipDTO {
    * End date of the membership validity.
    */
   @NotNull
+  @Future
   private LocalDate endDate;
 
   /**
    * Name of the membership plan (e.g., Monthly, Quarterly).
    */
-  @NotBlank(message = Constant.NAME_REQUIRED)
+  @NotBlank
   private String name;
-
 }

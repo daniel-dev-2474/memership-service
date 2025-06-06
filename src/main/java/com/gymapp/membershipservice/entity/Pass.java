@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +24,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Pass extends BaseEntity{
+@EqualsAndHashCode(callSuper = true)
+public class Pass extends BaseEntity {
 
   /**
    * Unique identifier for the pass.
@@ -42,10 +44,11 @@ public class Pass extends BaseEntity{
    * Indicates whether the pass has been used.
    */
   @Column(nullable = false)
-  private boolean used = false;
+  private boolean used;
 
   /**
-   * Date when the pass was used (null if not yet used).
+   * Date on which the pass was used, if applicable.
    */
-  private LocalDateok  fechaUso;
+  private LocalDate usedDate;
+
 }

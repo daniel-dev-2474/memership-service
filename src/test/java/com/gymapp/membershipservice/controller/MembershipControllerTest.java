@@ -1,7 +1,6 @@
 package com.gymapp.membershipservice.controller;
-
 import com.gymapp.membershipservice.dto.MembershipDTO;
-import com.gymapp.membershipservice.entity.Membership;
+import com.gymapp.membershipservice.dto.MembershipRequest;
 import com.gymapp.membershipservice.service.MembershipService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,97 +9,77 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
+/**
+ * Unit tests for {@link MembershipController}.
+ */
 @ExtendWith(MockitoExtension.class)
 class MembershipControllerTest {
 
   @Mock
-  private MembershipService service;
+  private MembershipService membershipService;
 
   @InjectMocks
-  private MembershipController controller;
+  private MembershipController membershipController;
 
-  private Membership membership;
-
+  private MembershipRequest request;
   private MembershipDTO dto;
 
+  private UUID userId;
+
+  /**
+   * Setup before each test.
+   */
   @BeforeEach
   void setUp() {
-    membership = Membership.builder()
-        .id(1L)
-        .name("Premium")
-        .includedPasses(10)
+    userId = UUID.randomUUID();
+
+    request = MembershipRequest.builder()
+        .userId(userId)
+        .startDate(LocalDate.now())
+        .endDate(LocalDate.now().plusMonths(1))
         .build();
 
     dto = MembershipDTO.builder()
         .id(1L)
-        .name("Premium")
-        .includedPasses(10)
+        .userId(userId)
+        .startDate(request.getStartDate())
+        .endDate(request.getEndDate())
         .build();
   }
 
+  /**
+   * Tests that a new membership is successfully created.
+   */
   @Test
-  void testCreateMembresia() {
-    when(service.create(any())).thenReturn(dto);
-    MembershipDTO resultado = controller.create(dto);
+  void testCreateMembership() {
+    when(membershipService.create(request)).thenReturn(dto);
 
-    assertEquals("Premium", resultado.getName());
-    assertEquals(10, resultado.getIncludedPasses());
-    verify(service).create(any());
+    MembershipDTO result = membershipController.create(request);
+
+    assertThat(result).isNotNull();
+    assertThat(result.getUserId()).isEqualTo(request.getUserId());
+    assertThat(result.getStartDate()).isEqualTo(request.getStartDate());
+    verify(membershipService, times(1)).create(request);
   }
 
+  /**
+   * Tests retrieving memberships by userId.
+   */
   @Test
-  void test_findById() {
-    when(service.findById(any())).thenReturn(dto);
+  void testGetMembershipsByUserId() {
+    when(membershipService.getMembershipsByUserId(userId)).thenReturn(List.of(dto));
 
-    MembershipDTO resultado = service.findById(1L);
+    List<MembershipDTO> result = membershipController.getMembershipsByUserId(userId);
 
-    assertEquals(1, resultado.getId());
-    assertEquals("Premium", resultado.getName());
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0).getUserId()).isEqualTo(userId);
+    verify(membershipService, times(1)).getMembershipsByUserId(userId);
   }
-
-  @Test
-  void test_findByIdFail() {
-    when(service.findById(2L)).thenThrow(new RuntimeException("Exception"));
-
-    assertThrows(RuntimeException.class, () -> {
-      service.findById(2L);
-    });
-  }
-
-  @Test
-  void listar_retornarListaDtos() {
-    when(service.findAll()).thenReturn(List.of(dto));
-
-    List<MembershipDTO> resultado = controller.findAll();
-    assertEquals(1, resultado.size());
-    assertEquals("Premium", resultado.get(0).getName());
-  }
-
-  @Test
-  void actualizar_deberiaActualizarYRetornarDTO() {
-    MembershipDTO actualizacion = MembershipDTO.builder()
-        .name("Actualizada")
-        .includedPasses(12)
-        .build();
-
-    when(service.update(any(), any())).thenReturn(dto);
-    MembershipDTO resultado = service.update(1L, actualizacion);
-  }
-
-  @Test
-  void actualizar_deberiaLanzarExcepcionSiNoExiste() {
-    when(service.update(any(), any())).thenThrow(new RuntimeException("Exception"));
-    assertThrows(RuntimeException.class, () -> {
-      service.update(2L, dto);
-    });
-  }
-
-
 }

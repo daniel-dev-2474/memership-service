@@ -13,12 +13,20 @@ import java.util.stream.Collectors;
 
 
 /**
- * Centralized exception handler that intercepts and handles application exceptions,
- * providing meaningful error responses to the client.
+ * Centralized exception handler that intercepts and handles application
+ * exceptions, providing meaningful error responses to the client.
  */
 @RestControllerAdvice
 public final class GlobalExceptionHandler {
 
+  /**
+   * Exception handler for managing bad request caused by
+   * validation errors.
+   *
+   * @param ex the method argument not valid exception instance.
+   * @param request the HTTP request information.
+   * @return an error DTO containing details about the cause of the error.
+   */
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponse> handleValidationErrors(
       final MethodArgumentNotValidException ex, final HttpServletRequest request
@@ -26,8 +34,8 @@ public final class GlobalExceptionHandler {
     String details = ex.getBindingResult()
         .getFieldErrors()
         .stream()
-        .map(error -> error.getField() +
-            Constant.COLON_SEPARATOR + error.getDefaultMessage())
+        .map(error -> error.getField()
+            + Constant.COLON_SEPARATOR + error.getDefaultMessage())
         .collect(Collectors.joining(Constant.COMMA_SEPARATOR));
     ErrorResponse error = ErrorResponse.builder()
         .code(HttpStatus.BAD_REQUEST.value())
@@ -40,7 +48,8 @@ public final class GlobalExceptionHandler {
   }
 
   /**
-   * Exception handler for managing runtime exceptions caused by validation errors.
+   * Exception handler for managing runtime exceptions caused by
+   * validation errors.
    *
    * @param ex the runtime exception instance.
    * @param request the HTTP request information.

@@ -1,12 +1,17 @@
 package com.gymapp.membershipservice.constant;
 
-import lombok.NoArgsConstructor;
 
 /**
  * Contains constant values used throughout the membership-service.
  */
-@NoArgsConstructor
-public class Constant {
+public final class Constant {
+
+  /**
+   * Private constructor.
+   */
+  private Constant() {
+    throw new UnsupportedOperationException("Utility class");
+  }
 
   /**
    * Validation message indicating that the name field is required.
@@ -16,7 +21,8 @@ public class Constant {
   /**
    * Validation message indicating that at least one pass must be provided.
    */
-  public static final String PASSES_REQUIRED = "At least 1 pass must be included";
+  public static final String PASSES_REQUIRED =
+      "At least 1 pass must be included";
 
   /**
    * Message used when a membership record is not found.
@@ -39,7 +45,8 @@ public class Constant {
   public static final String COLON_SEPARATOR = ": ";
 
   /**
-   * Separator string consisting of a comma and space, commonly used to join multiple items.
+   * Separator string consisting of a comma and space,
+   * commonly used to join multiple items.
    */
   public static final String COMMA_SEPARATOR = ", ";
 

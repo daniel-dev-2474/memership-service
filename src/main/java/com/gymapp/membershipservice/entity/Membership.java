@@ -12,8 +12,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.util.UUID;
+
 /**
- * Represents a membership plan in the gym system.
+ * Represents an active gym membership assigned to a user.
  */
 
 @Entity
@@ -33,19 +36,26 @@ public class Membership extends BaseEntity {
   private Long id;
 
   /**
+   * ID of the user to whom this membership belongs.
+   */
+  @Column(nullable = false, updatable = false)
+  private UUID userId;
+
+  /**
+   * Start date of the membership validity.
+   */
+  @Column(nullable = false)
+  private LocalDate startDate;
+
+  /**
+   * End date of the membership validity.
+   */
+  @Column(nullable = false)
+  private LocalDate endDate;
+
+  /**
    * Name of the membership plan (e.g., Monthly, Quarterly).
    */
   private String name;
 
-  /**
-   * Duration of the membership in days (e.g., 30 for a monthly plan).
-   */
-  @Column(nullable = false)
-  private Integer durationInDays;
-
-  /**
-   * Cost of the membership in the local currency.
-   */
-  @Column(nullable = false)
-  private Double cost;
 }
