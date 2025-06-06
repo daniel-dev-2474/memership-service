@@ -7,7 +7,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Main class of the application.
  */
 @SpringBootApplication
-public class MembershipServiceApplication {
+public final class MembershipServiceApplication {
+
+  /**
+   * Private constructor of the class.
+   */
+  private MembershipServiceApplication() {
+  }
 
   /**
    * Main method.

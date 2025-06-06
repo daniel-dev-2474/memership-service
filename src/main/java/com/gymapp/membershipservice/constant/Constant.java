@@ -19,15 +19,10 @@ public final class Constant {
   public static final String NAME_REQUIRED = "The name is required";
 
   /**
-   * Validation message indicating that at least one pass must be provided.
+   * Base URI for pass-related API endpoints.
    */
-  public static final String PASSES_REQUIRED =
-      "At least 1 pass must be included";
+  public static final String API_PASS = "/api/pass";
 
-  /**
-   * Message used when a membership record is not found.
-   */
-  public static final String MEMBERSHIP_NOT_FOUND = "Membership not found";
 
   /**
    * Base URI for membership-related API endpoints.
@@ -37,7 +32,7 @@ public final class Constant {
   /**
    * URI path parameter used to represent a membership ID.
    */
-  public static final String PARAM_ID = "/{id}";
+  public static final String PARAM_ID = "/{userId}";
 
   /**
    * Separator string consisting of a colon and space, used in error formatting.

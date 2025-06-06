@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/passes")
+@RequestMapping(Constant.API_PASS)
 @RequiredArgsConstructor
 public class PassController {
 
@@ -47,7 +47,7 @@ public class PassController {
    */
   @GetMapping(Constant.PARAM_ID)
   public List<PassDTO> getPassesByUserId(@PathVariable final UUID userId) {
-    return passService.getPassesByUserIdd(userId);
+    return passService.getPassesByUserId(userId);
   }
 
 }

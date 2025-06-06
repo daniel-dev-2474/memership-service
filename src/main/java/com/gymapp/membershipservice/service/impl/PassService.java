@@ -6,6 +6,7 @@ import com.gymapp.membershipservice.entity.Pass;
 import com.gymapp.membershipservice.repository.PassRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.UUID;
@@ -45,7 +46,7 @@ public class PassService {
    * @param userId UUID of the user.
    * @return List of pass DTOs.
    */
-  public List<PassDTO> getPassesByUserIdd(final UUID userId) {
+  public List<PassDTO> getPassesByUserId(@PathVariable final UUID userId) {
     List<Pass> passes = passRepository.findByUserId(userId);
     return passes.stream().filter(Pass::isUsed)
         .map(p -> PassDTO.builder()
@@ -55,4 +56,6 @@ public class PassService {
             .build())
         .toList();
   }
+
+
 }

@@ -114,9 +114,10 @@
 								<exclude>**/dto/**</exclude>
 								<exclude>**/entity/**</exclude>
 								<exclude>**/repository/**</exclude>
-								<exclude>**/service/**</exclude>
+								<exclude>**/service/*</exclude>
 								<exclude>**/config/**</exclude>
-								<exclude>**/MembershipServiceApplication.class</exclude>
+								<exclude>**/*Application.class</exclude>
+								<exclude>**/constant/**</exclude>
 							</excludes>
 						</configuration>
 					</execution>
@@ -196,6 +197,24 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.10</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>report</report>
+						</reports>
+						<configuration>
+							<excludes>
+								<exclude>**/dto/**</exclude>
+								<exclude>**/entity/**</exclude>
+								<exclude>**/repository/**</exclude>
+								<exclude>**/service/*</exclude>
+								<exclude>**/config/**</exclude>
+								<exclude>**/*Application.class</exclude>
+								<exclude>**/constant/**</exclude>
+							</excludes>
+						</configuration>
+					</reportSet>
+				</reportSets>
 			</plugin>
 		</plugins>
 	</reporting>
