@@ -84,4 +84,5 @@ Check coverage report in: `target/site/jacoco/index.html`
 
 ## 👤 Author
 
-Backend system designed and implemented by daniel-dev-2474.
+Daniel @daniel-dev-2474
+Java Backend Developer | Spring Boot | Microservices | PostgreSQL | DevOps Basics
