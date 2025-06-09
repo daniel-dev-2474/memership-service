@@ -84,5 +84,5 @@ Check coverage report in: `target/site/jacoco/index.html`
 
 ## 👤 Author
 
-Daniel @daniel-dev-2474
+**Daniel [@daniel-dev-2474](https://github.com/daniel-dev-2474)**  
 Java Backend Developer | Spring Boot | Microservices | PostgreSQL | DevOps Basics
