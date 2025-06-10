@@ -1,6 +1,6 @@
 package com.gymapp.membershipservice.service.impl;
 
-import com.gymapp.membershipservice.dto.MembershipDTO;
+import com.gymapp.membershipservice.dto.MembershipResponse;
 import com.gymapp.membershipservice.dto.MembershipRequest;
 import com.gymapp.membershipservice.entity.Membership;
 import com.gymapp.membershipservice.mapper.MembershipMapper;
@@ -61,10 +61,9 @@ class MembershipServiceImplTest {
   void testCreateMembership() {
     when(repository.save(any(Membership.class))).thenReturn(membership);
 
-    MembershipDTO result = service.create(request);
+    MembershipResponse result = service.create(request);
 
     assertThat(result).isNotNull();
-    assertThat(result.getUserId()).isEqualTo(request.getUserId());
     assertThat(result.getName()).isEqualTo(request.getName());
 
     // Optional: verify values sent to save()
@@ -80,10 +79,9 @@ class MembershipServiceImplTest {
   void testGetMembershipsByUserId() {
     when(repository.findByUserId(userId)).thenReturn(List.of(membership));
 
-    List<MembershipDTO> result = service.getMembershipsByUserId(userId);
+    List<MembershipResponse> result = service.getMembershipsByUserId(userId);
 
     assertThat(result).hasSize(1);
-    assertThat(result.get(0).getUserId()).isEqualTo(userId);
     assertThat(result.get(0).getName()).isEqualTo(membership.getName());
 
     verify(repository).findByUserId(userId);

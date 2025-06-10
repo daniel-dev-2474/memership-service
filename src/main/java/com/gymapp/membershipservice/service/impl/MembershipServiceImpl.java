@@ -3,7 +3,7 @@
  */
 package com.gymapp.membershipservice.service.impl;
 
-import com.gymapp.membershipservice.dto.MembershipDTO;
+import com.gymapp.membershipservice.dto.MembershipResponse;
 import com.gymapp.membershipservice.dto.MembershipRequest;
 import com.gymapp.membershipservice.entity.Membership;
 import com.gymapp.membershipservice.mapper.MembershipMapper;
@@ -38,7 +38,7 @@ public class MembershipServiceImpl implements MembershipService {
    * @return the created MembershipDTO.
    */
   @Override
-  public MembershipDTO create(final MembershipRequest dto) {
+  public MembershipResponse create(final MembershipRequest dto) {
     Membership membership = MembershipMapper.toEntity(dto);
     Membership save = repository.save(membership);
     return MembershipMapper.mapToDTO(save);
@@ -50,12 +50,11 @@ public class MembershipServiceImpl implements MembershipService {
    * @return list of MembershipDTO.
    */
   @Override
-  public List<MembershipDTO> getMembershipsByUserId(final UUID userId) {
+  public List<MembershipResponse> getMembershipsByUserId(final UUID userId) {
     List<Membership> memberships = repository.findByUserId(userId);
     return memberships.stream()
-        .map(m -> MembershipDTO.builder()
+        .map(m -> MembershipResponse.builder()
             .id(m.getId())
-            .userId(m.getUserId())
             .startDate(m.getStartDate())
             .endDate(m.getEndDate())
             .name(m.getName())

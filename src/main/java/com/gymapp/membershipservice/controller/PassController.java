@@ -1,7 +1,7 @@
 package com.gymapp.membershipservice.controller;
 
 import com.gymapp.membershipservice.constant.Constant;
-import com.gymapp.membershipservice.dto.PassDTO;
+import com.gymapp.membershipservice.dto.PassResponse;
 import com.gymapp.membershipservice.dto.PassRequest;
 import com.gymapp.membershipservice.service.impl.PassService;
 import jakarta.validation.Valid;
@@ -46,7 +46,7 @@ public class PassController {
    * @return List of pass DTOs.
    */
   @GetMapping(Constant.PARAM_ID)
-  public List<PassDTO> getPassesByUserId(@PathVariable final UUID userId) {
+  public List<PassResponse> getPassesByUserId(@PathVariable final UUID userId) {
     return passService.getPassesByUserId(userId);
   }
 

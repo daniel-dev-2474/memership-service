@@ -21,13 +21,13 @@ public final class Constant {
   /**
    * Base URI for pass-related API endpoints.
    */
-  public static final String API_PASS = "/api/pass";
+  public static final String API_PASS = "/api/passes";
 
 
   /**
    * Base URI for membership-related API endpoints.
    */
-  public static final String API_MEMBERSHIP = "/api/membership";
+  public static final String API_MEMBERSHIP = "/api/memberships";
 
   /**
    * URI path parameter used to represent a membership ID.

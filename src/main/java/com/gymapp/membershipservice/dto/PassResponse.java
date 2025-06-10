@@ -18,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PassDTO {
+public class PassResponse {
 
   /**
    * Unique identifier for the pass.

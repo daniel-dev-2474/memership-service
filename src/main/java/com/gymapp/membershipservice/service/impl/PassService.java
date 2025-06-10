@@ -1,6 +1,6 @@
 package com.gymapp.membershipservice.service.impl;
 
-import com.gymapp.membershipservice.dto.PassDTO;
+import com.gymapp.membershipservice.dto.PassResponse;
 import com.gymapp.membershipservice.dto.PassRequest;
 import com.gymapp.membershipservice.entity.Pass;
 import com.gymapp.membershipservice.repository.PassRepository;
@@ -46,10 +46,10 @@ public class PassService {
    * @param userId UUID of the user.
    * @return List of pass DTOs.
    */
-  public List<PassDTO> getPassesByUserId(@PathVariable final UUID userId) {
+  public List<PassResponse> getPassesByUserId(@PathVariable final UUID userId) {
     List<Pass> passes = passRepository.findByUserId(userId);
     return passes.stream().filter(Pass::isUsed)
-        .map(p -> PassDTO.builder()
+        .map(p -> PassResponse.builder()
             .id(p.getId())
             .userId(p.getUserId())
             .createAt(p.getCreatedAt())

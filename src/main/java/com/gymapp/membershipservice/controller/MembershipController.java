@@ -1,7 +1,7 @@
 package com.gymapp.membershipservice.controller;
 
 import com.gymapp.membershipservice.constant.Constant;
-import com.gymapp.membershipservice.dto.MembershipDTO;
+import com.gymapp.membershipservice.dto.MembershipResponse;
 import com.gymapp.membershipservice.dto.MembershipRequest;
 import com.gymapp.membershipservice.service.MembershipService;
 import jakarta.validation.Valid;
@@ -42,7 +42,7 @@ public class MembershipController {
    */
 
   @PostMapping
-  public MembershipDTO create(@RequestBody @Valid final MembershipRequest dto) {
+  public MembershipResponse create(@RequestBody @Valid final MembershipRequest dto) {
     return service.create(dto);
   }
 
@@ -53,7 +53,7 @@ public class MembershipController {
    * @return the MembershipDTO if found.
    */
   @GetMapping(Constant.PARAM_ID)
-  public List<MembershipDTO> getMembershipsByUserId(
+  public List<MembershipResponse> getMembershipsByUserId(
       @PathVariable final UUID userId
   ) {
     return service.getMembershipsByUserId(userId);

@@ -1,6 +1,6 @@
 package com.gymapp.membershipservice.service;
 
-import com.gymapp.membershipservice.dto.MembershipDTO;
+import com.gymapp.membershipservice.dto.MembershipResponse;
 import com.gymapp.membershipservice.dto.MembershipRequest;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public interface MembershipService {
    * @param dto the data for the new membership.
    * @return the created MembershipDTO.
    */
-  MembershipDTO create(MembershipRequest dto);
+  MembershipResponse create(MembershipRequest dto);
 
   /**
    * Retrieves a list of all memberships.
@@ -27,5 +27,5 @@ public interface MembershipService {
    * @param userId for the user passes.
    * @return list of MembershipDTO.
    */
-  List<MembershipDTO> getMembershipsByUserId(UUID userId);
+  List<MembershipResponse> getMembershipsByUserId(UUID userId);
 }

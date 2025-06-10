@@ -1,7 +1,7 @@
 package com.gymapp.membershipservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gymapp.membershipservice.dto.PassDTO;
+import com.gymapp.membershipservice.dto.PassResponse;
 import com.gymapp.membershipservice.dto.PassRequest;
 import com.gymapp.membershipservice.service.impl.PassService;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ class PassControllerTest {
         .build();
 
     mockMvc.perform(
-        post("/api/pass")
+        post("/api/passes")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isCreated());
@@ -56,14 +56,14 @@ class PassControllerTest {
   @Test
   void shouldReturnPassesByUserId() throws Exception {
     UUID userId = UUID.randomUUID();
-    List<PassDTO> passes = List.of(
-        PassDTO.builder().id(1L).userId(userId).createAt(LocalDateTime.now()).build(),
-        PassDTO.builder().id(2L).userId(userId).createAt(LocalDateTime.now()).build()
+    List<PassResponse> passes = List.of(
+        PassResponse.builder().id(1L).userId(userId).createAt(LocalDateTime.now()).build(),
+        PassResponse.builder().id(2L).userId(userId).createAt(LocalDateTime.now()).build()
     );
 
     when(passService.getPassesByUserId(userId)).thenReturn(passes);
 
-    mockMvc.perform(get("/api/pass/{userId}", userId))
+    mockMvc.perform(get("/api/passes/{userId}", userId))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.size()").value(passes.size()))
         .andExpect(jsonPath("$[0].userId").value(userId.toString()));

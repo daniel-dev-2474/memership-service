@@ -1,5 +1,5 @@
 package com.gymapp.membershipservice.controller;
-import com.gymapp.membershipservice.dto.MembershipDTO;
+import com.gymapp.membershipservice.dto.MembershipResponse;
 import com.gymapp.membershipservice.dto.MembershipRequest;
 import com.gymapp.membershipservice.service.MembershipService;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +29,7 @@ class MembershipControllerTest {
   private MembershipController membershipController;
 
   private MembershipRequest request;
-  private MembershipDTO dto;
+  private MembershipResponse dto;
 
   private UUID userId;
 
@@ -46,9 +46,8 @@ class MembershipControllerTest {
         .endDate(LocalDate.now().plusMonths(1))
         .build();
 
-    dto = MembershipDTO.builder()
+    dto = MembershipResponse.builder()
         .id(1L)
-        .userId(userId)
         .startDate(request.getStartDate())
         .endDate(request.getEndDate())
         .build();
@@ -61,10 +60,9 @@ class MembershipControllerTest {
   void testCreateMembership() {
     when(membershipService.create(request)).thenReturn(dto);
 
-    MembershipDTO result = membershipController.create(request);
+    MembershipResponse result = membershipController.create(request);
 
     assertThat(result).isNotNull();
-    assertThat(result.getUserId()).isEqualTo(request.getUserId());
     assertThat(result.getStartDate()).isEqualTo(request.getStartDate());
     verify(membershipService, times(1)).create(request);
   }
@@ -76,10 +74,9 @@ class MembershipControllerTest {
   void testGetMembershipsByUserId() {
     when(membershipService.getMembershipsByUserId(userId)).thenReturn(List.of(dto));
 
-    List<MembershipDTO> result = membershipController.getMembershipsByUserId(userId);
+    List<MembershipResponse> result = membershipController.getMembershipsByUserId(userId);
 
     assertThat(result).hasSize(1);
-    assertThat(result.get(0).getUserId()).isEqualTo(userId);
     verify(membershipService, times(1)).getMembershipsByUserId(userId);
   }
 }

@@ -1,6 +1,6 @@
 package com.gymapp.membershipservice.service.impl;
 
-import com.gymapp.membershipservice.dto.PassDTO;
+import com.gymapp.membershipservice.dto.PassResponse;
 import com.gymapp.membershipservice.dto.PassRequest;
 import com.gymapp.membershipservice.entity.Pass;
 import com.gymapp.membershipservice.repository.PassRepository;
@@ -80,7 +80,7 @@ class PassServiceTest {
     );
     when(repository.findByUserId(userId)).thenReturn(mockPasses);
 
-    List<PassDTO> result = service.getPassesByUserId(userId);
+    List<PassResponse> result = service.getPassesByUserId(userId);
 
     assertEquals(2, result.size());
     assertTrue(result.stream().allMatch(dto -> dto.getUserId().equals(userId)));

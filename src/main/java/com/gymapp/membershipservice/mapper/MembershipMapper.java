@@ -1,6 +1,6 @@
 package com.gymapp.membershipservice.mapper;
 
-import com.gymapp.membershipservice.dto.MembershipDTO;
+import com.gymapp.membershipservice.dto.MembershipResponse;
 import com.gymapp.membershipservice.dto.MembershipRequest;
 import com.gymapp.membershipservice.entity.Membership;
 
@@ -37,11 +37,10 @@ public final class MembershipMapper {
    * @param entity the membership entity to be converted.
    * @return the corresponding MembershipDTO.
    */
-  public static MembershipDTO mapToDTO(final Membership entity) {
-    return MembershipDTO.builder()
+  public static MembershipResponse mapToDTO(final Membership entity) {
+    return MembershipResponse.builder()
         .id(entity.getId())
         .name(entity.getName())
-        .userId(entity.getUserId())
         .startDate(entity.getStartDate())
         .endDate(entity.getEndDate())
         .build();
