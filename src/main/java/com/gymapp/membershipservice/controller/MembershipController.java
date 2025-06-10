@@ -42,7 +42,9 @@ public class MembershipController {
    */
 
   @PostMapping
-  public MembershipResponse create(@RequestBody @Valid final MembershipRequest dto) {
+  public MembershipResponse create(
+      @RequestBody @Valid final MembershipRequest dto
+  ) {
     return service.create(dto);
   }
 

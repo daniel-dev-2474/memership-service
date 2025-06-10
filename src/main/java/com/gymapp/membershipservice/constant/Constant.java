@@ -6,6 +6,7 @@ package com.gymapp.membershipservice.constant;
  */
 public final class Constant {
 
+
   /**
    * Private constructor.
    */
@@ -14,9 +15,10 @@ public final class Constant {
   }
 
   /**
-   * Validation message indicating that the name field is required.
+   * Global handler logs.
    */
-  public static final String NAME_REQUIRED = "The name is required";
+  public static final String GLOBAL_HANDLER = "[global-exception]";
+
 
   /**
    * Base URI for pass-related API endpoints.
@@ -45,13 +47,4 @@ public final class Constant {
    */
   public static final String COMMA_SEPARATOR = ", ";
 
-  /**
-   * General message used for failed validation errors.
-   */
-  public static final String FAILED_VALIDATION = "Failed Validation";
-
-  /**
-   * General message used for business rule validation failures.
-   */
-  public static final String BUSINESS_VALIDATION = "Business Error";
 }

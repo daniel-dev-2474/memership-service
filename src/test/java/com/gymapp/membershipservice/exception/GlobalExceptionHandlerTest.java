@@ -1,5 +1,6 @@
 package com.gymapp.membershipservice.exception;
 
+import com.gymapp.common.exceptions.constants.ErrorMessages;
 import com.gymapp.membershipservice.constant.Constant;
 import com.gymapp.membershipservice.mapper.MembershipMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,9 +45,9 @@ class GlobalExceptionHandlerTest {
     ErrorResponse error = response.getBody();
     assertNotNull(error);
     assertEquals(HttpStatus.BAD_REQUEST.value(), error.getCode());
-    assertEquals(Constant.FAILED_VALIDATION, error.getMessage());
+    assertEquals(ErrorMessages.BAD_REQUEST, error.getMessage());
     assertTrue(error.getDetails().contains("field: must not be null"));
-    assertEquals("/test-uri", error.getMoreInfo());
+    assertEquals("Review field constraints and input format.", error.getMoreInfo());
     assertNotNull(error.getTimestamp());
   }
 
@@ -60,9 +61,25 @@ class GlobalExceptionHandlerTest {
     ErrorResponse error = response.getBody();
     assertNotNull(error);
     assertEquals(HttpStatus.UNPROCESSABLE_ENTITY.value(), error.getCode());
-    assertEquals(Constant.BUSINESS_VALIDATION, error.getMessage());
+    assertEquals(ErrorMessages.BUSINESS_VALIDATION, error.getMessage());
     assertEquals("Something went wrong", error.getDetails());
-    assertEquals("/test-uri", error.getMoreInfo());
+    assertEquals("Check business rules or constraints for the requested operation.", error.getMoreInfo());
+    assertNotNull(error.getTimestamp());
+  }
+
+  @Test
+  void shouldException() {
+    Exception ex = new Exception("Something went wrong");
+
+    ResponseEntity<ErrorResponse> response = handler.handleUnhandledExceptions(ex, mockRequest);
+
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    ErrorResponse error = response.getBody();
+    assertNotNull(error);
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), error.getCode());
+    assertEquals(ErrorMessages.INTERNAL_SERVER_ERROR, error.getMessage());
+    assertEquals("Exception: Exception", error.getDetails());
+    assertEquals("Contact support with the error reference code.", error.getMoreInfo());
     assertNotNull(error.getTimestamp());
   }
 
