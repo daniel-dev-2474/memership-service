@@ -1,6 +1,7 @@
 package com.gymapp.membershipservice.exception;
 
 import com.gymapp.common.exceptions.constants.ErrorMessages;
+import com.gymapp.common.exceptions.error.ErrorResponse;
 import com.gymapp.membershipservice.constant.Constant;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
